@@ -16,6 +16,8 @@ public :
 
 
 	sf::CircleShape GetShape();
+	float GetBallXPosition();
+	float GetBallYPosition();
 
 
 	void InitializeBall();

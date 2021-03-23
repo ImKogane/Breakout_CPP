@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Ball.h"
+#include "Math.h"
 
 
 int main()
@@ -8,6 +9,11 @@ int main()
     float x = 300;
     float y = 900;
     bool move = false;
+    bool canshoot = true;
+    sf::Vector2i localPosition;
+    
+    sf::Vector2f direction;
+    
 
     sf::RenderWindow window(sf::VideoMode(600, 900), "SFML works!");
     Ball* ball = new Ball(50, x, y);
@@ -19,10 +25,12 @@ int main()
         sf::Event event;
 
         if (move) {
-            y -= 0.1f;
+            x += 0.1f * direction.x;
+            y += 0.1f * direction.y;
 
             if (y <= 0) //If the ball out of the screen
             {
+                canshoot = true;
                 move = false;
                 x = 300; 
                 y =  900;
@@ -39,8 +47,15 @@ int main()
                 //Mouse left click event
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    ball->SetBallPosition(x, y);
-                    move = true;
+                    if (canshoot)
+                      {
+                         localPosition = sf::Mouse::getPosition(window);
+                         direction.x = (float)localPosition.x-ball->GetBallXPosition();
+                         direction.y = (float)localPosition.y-ball->GetBallYPosition();
+                         Math::normalize(direction);
+                         move = true;
+                         canshoot = false;
+                        }
                 }
             }
         }

@@ -29,6 +29,15 @@ sf::CircleShape Ball::GetShape()
 	return ballShape;
 }
 
+float Ball::GetBallXPosition()
+{
+	return ballPosX;
+}
+float Ball::GetBallYPosition()
+{
+	return ballPosY;
+}
+
 /// <summary>
 /// Set ball color
 /// </summary>
