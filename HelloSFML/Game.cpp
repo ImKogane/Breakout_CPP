@@ -2,23 +2,36 @@
 #include <iostream>
 #include "Ball.h"
 #include "Math.h"
+#include "Constants.h"
 
 
 int main()
 {
-    float x = 300;
-    float y = 900;
+
+    const int screenWidth = Constants::screenWidth;
+    const int screenHeight = Constants::screenHeight;
+
+
     bool move = false;
     bool canshoot = true;
+
+ 
+    sf::FloatRect ballBoundingBox;
     sf::Vector2i localPosition;
     
     sf::Vector2f direction;
     
 
-    sf::RenderWindow window(sf::VideoMode(600, 900), "SFML works!");
-    Ball* ball = new Ball(50, x, y);
+    sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "SFML works!");
+    Ball* ball = new Ball(100);
+    Constants::BallPositionRatio(ball, 0.5, 1);
+
+    float x = ball->GetShape().getPosition().x;
+    float y = ball->GetShape().getPosition().y;
+
     sf::CircleShape* ballShape = new sf::CircleShape(ball->GetShape());
-    ball->SetBallOrigin(50.0f, 100.0f);
+    Constants::BallOriginByRatio(ball, 0.5, 1);
+    ballBoundingBox = ball->GetBallBoundingBox();
 
     while (window.isOpen())
     {
@@ -28,12 +41,24 @@ int main()
             x += 0.1f * direction.x;
             y += 0.1f * direction.y;
 
-            if (y <= 0) //If the ball out of the screen
-            {
-                canshoot = true;
-                move = false;
-                x = 300; 
-                y =  900;
+            if (y - ballBoundingBox.height <= 0 || x - ballBoundingBox.width/2  <= 0  || x >= screenWidth - ballBoundingBox.width/2 || y>= screenHeight+ ballBoundingBox.height) //If the ball out of the screen
+            {    
+                if(y - ballBoundingBox.height <= 0  )
+                 {
+                    direction.y = -direction.y;
+
+                 }
+                if(x - ballBoundingBox.width/2  <= 0 ||x >= screenWidth - ballBoundingBox.width/2)
+                 {
+                    direction.x = -direction.x;
+
+                 }
+                if (y >= screenHeight+ ballBoundingBox.height) {
+                    canshoot = true;
+                    move = false;
+                    x = screenWidth/2;
+                        y = screenHeight;
+                }   
             }
 
         }
@@ -47,6 +72,7 @@ int main()
                 //Mouse left click event
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
+                    std::cout << canshoot;
                     if (canshoot)
                       {
                          localPosition = sf::Mouse::getPosition(window);
@@ -60,6 +86,7 @@ int main()
             }
         }
         ball->SetBallPosition(x, y);
+        ballBoundingBox = ball->GetBallBoundingBox();
         window.clear();
         window.draw(ball->GetShape());
         window.display();

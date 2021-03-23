@@ -1,11 +1,9 @@
 #include "Ball.h"
 
 
-Ball::Ball(float size, float x, float y)
+Ball::Ball(float size)
 {
 	ballSize = size;
-	ballPosX = x;
-	ballPosY = y;
 
 	InitializeBall();
 }
@@ -17,6 +15,7 @@ void Ball::InitializeBall()
 {
 	ballShape.setRadius(ballSize);
 	ballShape.setPosition(ballPosX, ballPosY);
+	ballBoundingBox = ballShape.getGlobalBounds();
 	SetBallColor(sf::Color::Green);
 }
 
@@ -29,6 +28,16 @@ sf::CircleShape Ball::GetShape()
 	return ballShape;
 }
 
+/// <summary>
+/// Get the bounding box (collision box) of the ball shape
+/// </summary>
+/// <returns> Ball bounding box </returns>
+sf::FloatRect Ball::GetBallBoundingBox()
+{
+	return ballBoundingBox;
+}
+
+
 float Ball::GetBallXPosition()
 {
 	return ballPosX;
@@ -36,6 +45,10 @@ float Ball::GetBallXPosition()
 float Ball::GetBallYPosition()
 {
 	return ballPosY;
+}
+float Ball::GetBallSize()
+{
+	return ballSize;
 }
 
 /// <summary>
