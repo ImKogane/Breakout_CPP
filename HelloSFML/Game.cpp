@@ -10,9 +10,9 @@ int main()
     bool move = false;
 
     sf::RenderWindow window(sf::VideoMode(600, 900), "SFML works!");
-    Ball* shape = new Ball(50, x, y);
-    shape.setOrigin(50.0f, 100.0f);
-    shape.setFillColor(sf::Color::Green);
+    Ball* ball = new Ball(50, x, y);
+    sf::CircleShape* ballShape = new sf::CircleShape(ball->GetShape());
+    ball->SetBallOrigin(50.0f, 100.0f);
 
     while (window.isOpen())
     {
@@ -39,15 +39,14 @@ int main()
                 //Mouse left click event
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    shape.setPosition(shape.getPosition().x, y);
+                    ball->SetBallPosition(x, y);
                     move = true;
                 }
             }
         }
-        shape.getGlobalBounds();
-        shape.setPosition(x, y);
+        ball->SetBallPosition(x, y);
         window.clear();
-        window.draw(shape);
+        window.draw(ball->GetShape());
         window.display();
     }
 
