@@ -1,15 +1,18 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <list>
+#include <vector>
 #include "Ball.h"
 #include "Math.h"
+#include "Level.h"
 #include "Constants.h"
+
+Level* level = new Level(3, 5);
+std::list<Brick*> levelBricks;
 
 
 int main()
 {
-
-    const int screenWidth = Constants::screenWidth;
-    const int screenHeight = Constants::screenHeight;
 
 
     bool move = false;
@@ -20,11 +23,19 @@ int main()
     sf::Vector2i localPosition;
     
     sf::Vector2f direction;
-    
 
-    sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "SFML works!");
-    Ball* ball = new Ball(100);
+    levelBricks = level->GenerateLevel();
+
+    sf::RenderWindow window(sf::VideoMode(Constants::screenWidth, Constants::screenHeight), "Ultimate Breakout");
+
+    Ball* ball = new Ball(20);
     Constants::BallPositionRatio(ball, 0.5, 1);
+
+    /* Tentative de création d'une brique à afficher par la suite
+    Brick* brick = new Brick(10, 5, 1);
+    Constants::BrickPositionRatio(brick, 0.5, 0.5);
+    brick->SetBrickColor(sf::Color::Green);
+    */
 
     float x = ball->GetShape().getPosition().x;
     float y = ball->GetShape().getPosition().y;
@@ -41,23 +52,23 @@ int main()
             x += 0.1f * direction.x;
             y += 0.1f * direction.y;
 
-            if (y - ballBoundingBox.height <= 0 || x - ballBoundingBox.width/2  <= 0  || x >= screenWidth - ballBoundingBox.width/2 || y>= screenHeight+ ballBoundingBox.height) //If the ball out of the screen
+            if (y - ballBoundingBox.height <= 0 || x - ballBoundingBox.width/2  <= 0  || x >= Constants::screenWidth - ballBoundingBox.width/2 || y>= Constants::screenHeight+ ballBoundingBox.height) //If the ball out of the screen
             {    
                 if(y - ballBoundingBox.height <= 0  )
                  {
                     direction.y = -direction.y;
 
                  }
-                if(x - ballBoundingBox.width/2  <= 0 ||x >= screenWidth - ballBoundingBox.width/2)
+                if(x - ballBoundingBox.width/2  <= 0 ||x >= Constants::screenWidth - ballBoundingBox.width/2)
                  {
                     direction.x = -direction.x;
 
                  }
-                if (y >= screenHeight+ ballBoundingBox.height) {
+                if (y >= Constants::screenHeight+ ballBoundingBox.height) {
                     canshoot = true;
                     move = false;
-                    x = screenWidth/2;
-                        y = screenHeight;
+                    x = Constants::screenWidth/2;
+                    y = Constants::screenHeight;
                 }   
             }
 
@@ -86,9 +97,21 @@ int main()
             }
         }
         ball->SetBallPosition(x, y);
+        
+        
+        /*
+        * Pour chaque brick dans la liste recu apres la generation, dessiner le forme à la position en fonction du nombre de brick par ligne
+        for each (vector c in MyString)
+        {
+
+        }
+        
+        */
+
         ballBoundingBox = ball->GetBallBoundingBox();
         window.clear();
         window.draw(ball->GetShape());
+        //Test d'affichage d'une brique  : window.draw(brick->GetBrickShape());
         window.display();
     }
 
