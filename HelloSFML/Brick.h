@@ -22,4 +22,6 @@ public :
 	void SetBrickPosition(float x, float y);
 	void SetBrickColor();
 
+	void RemoveLife(int points);
+
 };

@@ -62,10 +62,10 @@ void Brick::SetBrickColor()
 	case 1:
 		brickShape.setFillColor(sf::Color::White);
 		break;
-	case 3:
+	case 2:
 		brickShape.setFillColor(sf::Color::Yellow);
 		break;
-	case 5:
+	case 3:
 		brickShape.setFillColor(sf::Color::Red);
 		break;
 	default:
@@ -84,4 +84,10 @@ void Brick::SetBrickPosition(float x, float y)
 	brickPosX = x;
 	brickPosY = y;
 	brickShape.setPosition(brickPosX, brickPosY);
+}
+
+void Brick::RemoveLife(int points)
+{
+	brickLife -= points;
+	SetBrickColor();
 }
