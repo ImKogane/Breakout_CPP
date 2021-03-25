@@ -20,7 +20,6 @@ public :
 	sf::FloatRect GetBrickBoundingBox();
 
 	void SetBrickPosition(float x, float y);
-	void SetBrickColor(sf::Color color);
-	void SetBrickShape();
+	void SetBrickColor();
 
 };

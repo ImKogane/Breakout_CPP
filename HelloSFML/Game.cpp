@@ -32,10 +32,11 @@ int main()
     Ball* ball = new Ball(20);
     Constants::BallPositionRatio(ball, 0.5, 1);
 
-    Brick* brick = new Brick(100, 50, 1);
+    Brick* brick = new Brick(100, 50, 5);
     Constants::BrickPositionRatio(brick, 0.5, 0.5);
-    brick->SetBrickColor(sf::Color::Green);
     brickBoundingBox = brick->GetBrickBoundingBox();
+    brick->SetBrickColor();
+
 
     float x = ball->GetShape().getPosition().x;
     float y = ball->GetShape().getPosition().y;

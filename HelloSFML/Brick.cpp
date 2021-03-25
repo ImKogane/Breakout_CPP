@@ -13,6 +13,9 @@ Brick::Brick(float sizeX, float sizeY, int lifePoints)
 	brickSizeX = sizeX;
 	brickSizeY = sizeY;
 	brickLife = lifePoints;
+
+	SetBrickColor();
+
 	brickShape = sf::RectangleShape(sf::Vector2f(brickSizeX, brickSizeY));
 	
 }
@@ -52,11 +55,24 @@ sf::FloatRect Brick::GetBrickBoundingBox()
 	return brickShape.getGlobalBounds();
 }
 
-void Brick::SetBrickColor(sf::Color color)
+void Brick::SetBrickColor()
 {
-	brickShape.setFillColor(color);
+	switch (brickLife)
+	{
+	case 1:
+		brickShape.setFillColor(sf::Color::White);
+		break;
+	case 3:
+		brickShape.setFillColor(sf::Color::Yellow);
+		break;
+	case 5:
+		brickShape.setFillColor(sf::Color::Red);
+		break;
+	default:
+		brickShape.setFillColor(sf::Color::White);
+		break;
+	}
 }
-
 
 /// <summary>
 /// Set the brick position
@@ -68,9 +84,4 @@ void Brick::SetBrickPosition(float x, float y)
 	brickPosX = x;
 	brickPosY = y;
 	brickShape.setPosition(brickPosX, brickPosY);
-}
-
-void Brick::SetBrickShape()
-{
-	//brickShape = new sf::RectangleShape(sf::Vector2f(brickSizeX, brickSizeY));
 }
