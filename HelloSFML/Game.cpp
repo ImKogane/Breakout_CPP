@@ -20,6 +20,7 @@ int main()
 
  
     sf::FloatRect ballBoundingBox;
+    sf::FloatRect brickBoundingBox;
     sf::Vector2i localPosition;
     
     sf::Vector2f direction;
@@ -34,6 +35,7 @@ int main()
     Brick* brick = new Brick(100, 50, 1);
     Constants::BrickPositionRatio(brick, 0.5, 0.5);
     brick->SetBrickColor(sf::Color::Green);
+    brickBoundingBox = brick->GetBrickBoundingBox();
 
     float x = ball->GetShape().getPosition().x;
     float y = ball->GetShape().getPosition().y;
@@ -44,30 +46,85 @@ int main()
     while (window.isOpen())
     {
         sf::Event event;
+        
+
+
+        /*std::cout << ballBoundingBox.left << std::endl;
+        std::cout << ballBoundingBox.top << std::endl;
+        std::cout << brickBoundingBox.left << std::endl;
+        std::cout << brickBoundingBox.top << std::endl;*/
+
+        ballBoundingBox = ball->GetBallBoundingBox();
+        if (ballBoundingBox.intersects(brickBoundingBox))
+        {
+            //std::cout << "ça touche" << std::endl;
+            float Dtop = abs(ballBoundingBox.top - brickBoundingBox.top - brickBoundingBox.height);
+            float Dleft = abs(ballBoundingBox.left - brickBoundingBox.left - brickBoundingBox.width);
+            float Dbottom = abs(ballBoundingBox.top - brickBoundingBox.top + ballBoundingBox.height);
+            float Dright = abs(ballBoundingBox.left - brickBoundingBox.left + ballBoundingBox.width);
+            float mini= Dtop;
+            float tab[] = { Dleft, Dbottom,Dright };
+            
+            for (size_t i = 0; i < 3; i++)
+            {
+                if (tab[i] < mini)
+                {
+                    mini = x;
+                }
+            }
+
+            if (Dtop <= Dleft && Dtop <= Dright && Dtop <= Dbottom )
+            {
+                direction.y = -direction.y;
+                std::cout << "bas" << std::endl;
+            }
+            else if (Dleft <= Dright && Dleft <= Dbottom && Dleft <= Dtop)
+            {
+                direction.x = -direction.x;
+                std::cout << "droite" << std::endl;
+            }
+            else if (Dright <= Dbottom && Dright <= Dleft && Dright <= Dtop)
+            {
+                direction.x = -direction.x;
+                //std::cout << "gauche" << std::endl;
+            }
+            else if (Dbottom <= Dleft && Dbottom <= Dtop && Dbottom <= Dright)
+            
+            {
+                direction.y = -direction.y;
+                std::cout << "haut" << std::endl;
+            }
+
+        }
 
         //Ball movement
         if (move) {
             x += 0.1f * direction.x;
             y += 0.1f * direction.y;
 
-            if (y - ballBoundingBox.height <= 0 || x - ballBoundingBox.width/2  <= 0  || x >= Constants::screenWidth - ballBoundingBox.width/2 || y>= Constants::screenHeight+ ballBoundingBox.height) //If the ball out of the screen
-            {    
-                if(y - ballBoundingBox.height <= 0  )
-                 {
+            if (ballBoundingBox.top <= 0 || ballBoundingBox.left <= 0 || ballBoundingBox.left + ballBoundingBox.width >= Constants::screenWidth || ballBoundingBox.top >= Constants::screenHeight + ballBoundingBox.height) //If the ball out of the screen
+            {
+                if (ballBoundingBox.top <= 0 && direction.y < 0)
+                {
                     direction.y = -direction.y;
 
-                 }
-                if(x - ballBoundingBox.width/2  <= 0 ||x >= Constants::screenWidth - ballBoundingBox.width/2)
-                 {
+
+                }
+                if (ballBoundingBox.left + ballBoundingBox.width >= Constants::screenWidth && direction.x > 0)
+                {
+                    direction.x = -direction.x;
+                }
+                if (ballBoundingBox.left <= 0 && direction.x < 0)
+                {
                     direction.x = -direction.x;
 
-                 }
-                if (y >= Constants::screenHeight+ ballBoundingBox.height) {
+                }
+                if (ballBoundingBox.top >= Constants::screenHeight + ballBoundingBox.height) {
                     canshoot = true;
                     move = false;
-                    x = Constants::screenWidth/2;
+                    x = Constants::screenWidth / 2;
                     y = Constants::screenHeight;
-                }   
+                }
             }
 
         }
@@ -106,7 +163,7 @@ int main()
         
         */
 
-        ballBoundingBox = ball->GetBallBoundingBox();
+        
         window.clear();
         window.draw(ball->GetShape());
         window.draw(brick->GetBrickShape());

@@ -13,8 +13,8 @@ Brick::Brick(float sizeX, float sizeY, int lifePoints)
 	brickSizeX = sizeX;
 	brickSizeY = sizeY;
 	brickLife = lifePoints;
-
 	brickShape = sf::RectangleShape(sf::Vector2f(brickSizeX, brickSizeY));
+	
 }
 
 /// <summary>
@@ -49,7 +49,7 @@ sf::RectangleShape Brick::GetBrickShape()
 /// <returns> Brick bounding box </returns>
 sf::FloatRect Brick::GetBrickBoundingBox()
 {
-	return brickBoundingBox;
+	return brickShape.getGlobalBounds();
 }
 
 void Brick::SetBrickColor(sf::Color color)

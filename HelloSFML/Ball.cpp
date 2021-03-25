@@ -15,7 +15,6 @@ void Ball::InitializeBall()
 {
 	ballShape.setRadius(ballSize);
 	ballShape.setPosition(ballPosX, ballPosY);
-	ballBoundingBox = ballShape.getGlobalBounds();
 	SetBallColor(sf::Color::Green);
 }
 
@@ -34,7 +33,7 @@ sf::CircleShape Ball::GetShape()
 /// <returns> Ball bounding box </returns>
 sf::FloatRect Ball::GetBallBoundingBox()
 {
-	return ballBoundingBox;
+	return ballShape.getGlobalBounds();
 }
 
 
