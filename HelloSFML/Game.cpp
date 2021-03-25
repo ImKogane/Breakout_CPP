@@ -31,16 +31,13 @@ int main()
     Ball* ball = new Ball(20);
     Constants::BallPositionRatio(ball, 0.5, 1);
 
-    /* Tentative de création d'une brique à afficher par la suite
-    Brick* brick = new Brick(10, 5, 1);
+    Brick* brick = new Brick(100, 50, 1);
     Constants::BrickPositionRatio(brick, 0.5, 0.5);
     brick->SetBrickColor(sf::Color::Green);
-    */
 
     float x = ball->GetShape().getPosition().x;
     float y = ball->GetShape().getPosition().y;
 
-    sf::CircleShape* ballShape = new sf::CircleShape(ball->GetShape());
     Constants::BallOriginByRatio(ball, 0.5, 1);
     ballBoundingBox = ball->GetBallBoundingBox();
 
@@ -48,6 +45,7 @@ int main()
     {
         sf::Event event;
 
+        //Ball movement
         if (move) {
             x += 0.1f * direction.x;
             y += 0.1f * direction.y;
@@ -111,7 +109,7 @@ int main()
         ballBoundingBox = ball->GetBallBoundingBox();
         window.clear();
         window.draw(ball->GetShape());
-        //Test d'affichage d'une brique  : window.draw(brick->GetBrickShape());
+        window.draw(brick->GetBrickShape());
         window.display();
     }
 

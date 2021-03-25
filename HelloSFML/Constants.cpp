@@ -16,6 +16,6 @@ void Constants::BallPositionRatio(Ball* ball, float ratioX, float ratioY)
 
 void Constants::BrickPositionRatio(Brick* brick, float ratioX, float ratioY)
 {
-	brick->GetBrickShape().setPosition(Constants::screenWidth * ratioX, Constants::screenHeight * ratioY);
+	brick->SetBrickPosition(Constants::screenWidth * ratioX, Constants::screenHeight * ratioY);
 }
 
