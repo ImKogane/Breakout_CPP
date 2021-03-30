@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
+#include <cstdlib>
 
 #pragma once
 class Brick

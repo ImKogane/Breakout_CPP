@@ -73,10 +73,16 @@ void Brick::SetBrickColor()
 		brickShape.setFillColor(sf::Color::White);
 		break;
 	case 2:
-		brickShape.setFillColor(sf::Color::Yellow);
+		brickShape.setFillColor(sf::Color(173, 231, 255));
 		break;
 	case 3:
-		brickShape.setFillColor(sf::Color::Red);
+		brickShape.setFillColor(sf::Color(116, 215, 255));
+		break;
+	case 4:
+		brickShape.setFillColor(sf::Color(0, 182, 255));
+		break;
+	case 5:
+		brickShape.setFillColor(sf::Color(0, 107, 151));
 		break;
 	default:
 		brickShape.setFillColor(sf::Color::White);
@@ -112,6 +118,5 @@ Brick::~Brick()
 
 void Brick::SetRandomBrickLife()
 {
-	brickLife = 3;
-	//brickLife = rand() % 3 + 1;
+	brickLife = (rand() % 5) + 1;
 }

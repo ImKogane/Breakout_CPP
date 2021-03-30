@@ -15,7 +15,7 @@ void Ball::InitializeBall()
 {
 	ballShape.setRadius(ballSize);
 	ballShape.setPosition(ballPosX, ballPosY);
-	SetBallColor(sf::Color::Green);
+	SetBallColor(sf::Color::White);
 }
 
 /// <summary>

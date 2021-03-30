@@ -25,55 +25,40 @@ int main()
     
     sf::Vector2f direction;
 
-    Level* level = new Level(3, 7);
+    Level* level = new Level(5, 7);
     levelBricks = level->GenerateLevel();
 
     sf::RenderWindow window(sf::VideoMode(Constants::screenWidth, Constants::screenHeight), "Ultimate Breakout");
 
-    Ball* ball = new Ball(20);
-    Constants::BallPositionRatio(ball, 0.5, 1);
-
-
-    
     level->GenerateLevel();
 
-    /*Brick* brick = new Brick(100, 50, 3);
-    Constants::BrickPositionRatio(brick, 0 , 0);
->>>>>>> a544951 (Level Generation)
-    brickBoundingBox = brick->GetBrickBoundingBox();
-    brick->SetBrickColor();*/
-
-
-    float x = ball->GetShape().getPosition().x;
+    //Ball generation
+    Ball* ball = new Ball(10);
+    Constants::BallPositionRatio(ball, 0.5, 1);
+    level->GenerateLevel();
+    //Get the ball position
+    float x = ball->GetShape().getPosition().x; 
     float y = ball->GetShape().getPosition().y;
-
     Constants::BallOriginByRatio(ball, 0.5, 1);
     ballBoundingBox = ball->GetBallBoundingBox();
+    
 
     while (window.isOpen())
     {
         sf::Event event;
         levelBricks = level->GetBrickList();
 
-
-        /*std::cout << ballBoundingBox.left << std::endl;
-        std::cout << ballBoundingBox.top << std::endl;
-        std::cout << brickBoundingBox.left << std::endl;
-        std::cout << brickBoundingBox.top << std::endl;*/
         ballBoundingBox = ball->GetBallBoundingBox();
 
         
-
+        //For each brick in level
         for (Brick* brick : levelBricks)
 
         {
             brickBoundingBox = brick->GetBrickBoundingBox();
             if (brick->GetBrickLife() > 0)
             {
-
-
-
-
+                //When the ball collide with a brick
                 if (ballBoundingBox.intersects(brickBoundingBox))
                 {
 
@@ -86,23 +71,22 @@ int main()
                     if (Dtop <= Dleft && Dtop <= Dright && Dtop <= Dbottom)
                     {
                         direction.y = -direction.y;
-                        std::cout << "bas" << std::endl;
+                        std::cout << "Bottom collision." << std::endl;
                     }
                     else if (Dleft <= Dright && Dleft <= Dbottom && Dleft <= Dtop)
                     {
                         direction.x = -direction.x;
-                        std::cout << "droite" << std::endl;
+                        std::cout << "Right collision." << std::endl;
                     }
                     else if (Dright <= Dbottom && Dright <= Dleft && Dright <= Dtop)
                     {
                         direction.x = -direction.x;
-                        //std::cout << "gauche" << std::endl;
+                        std::cout << "Left collision." << std::endl;
                     }
                     else if (Dbottom <= Dleft && Dbottom <= Dtop && Dbottom <= Dright)
-
                     {
                         direction.y = -direction.y;
-                        std::cout << "haut" << std::endl;
+                        std::cout << "Top collision." << std::endl;
                     }
 
                     //Destroy the brick object
@@ -156,7 +140,6 @@ int main()
                 //Mouse left click event
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    std::cout << canshoot;
                     if (canshoot)
                       {
                          localPosition = sf::Mouse::getPosition(window);
@@ -171,15 +154,7 @@ int main()
         }
         ball->SetBallPosition(x, y);
         
-        
-        /*
-        * Pour chaque brick dans la liste recu apres la generation, dessiner le forme à la position en fonction du nombre de brick par ligne
-        for each (vector c in MyString)
-        {
 
-        }
-        
-        */
 
         
         window.clear();
