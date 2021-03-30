@@ -7,7 +7,7 @@
 #include "Level.h"
 #include "Constants.h"
 
-Level* level = new Level(3, 5);
+
 std::list<Brick*> levelBricks;
 
 
@@ -25,6 +25,7 @@ int main()
     
     sf::Vector2f direction;
 
+    Level* level = new Level(3, 7);
     levelBricks = level->GenerateLevel();
 
     sf::RenderWindow window(sf::VideoMode(Constants::screenWidth, Constants::screenHeight), "Ultimate Breakout");
@@ -32,10 +33,15 @@ int main()
     Ball* ball = new Ball(20);
     Constants::BallPositionRatio(ball, 0.5, 1);
 
-    Brick* brick = new Brick(100, 50);
-    Constants::BrickPositionRatio(brick, 0.5 , 0.2);
+
+    
+    level->GenerateLevel();
+
+    /*Brick* brick = new Brick(100, 50, 3);
+    Constants::BrickPositionRatio(brick, 0 , 0);
+>>>>>>> a544951 (Level Generation)
     brickBoundingBox = brick->GetBrickBoundingBox();
-    brick->SetBrickColor();
+    brick->SetBrickColor();*/
 
 
     float x = ball->GetShape().getPosition().x;
@@ -47,62 +53,72 @@ int main()
     while (window.isOpen())
     {
         sf::Event event;
-        
+        levelBricks = level->GetBrickList();
 
 
         /*std::cout << ballBoundingBox.left << std::endl;
         std::cout << ballBoundingBox.top << std::endl;
         std::cout << brickBoundingBox.left << std::endl;
         std::cout << brickBoundingBox.top << std::endl;*/
-
         ballBoundingBox = ball->GetBallBoundingBox();
-        if (brick->GetBrickLife() > 0)
-        {
 
-            if (ballBoundingBox.intersects(brickBoundingBox))
+        
+
+        for (Brick* brick : levelBricks)
+
+        {
+            brickBoundingBox = brick->GetBrickBoundingBox();
+            if (brick->GetBrickLife() > 0)
             {
 
-                brick->RemoveLife(1);
-                float Dtop = abs(ballBoundingBox.top - brickBoundingBox.top - brickBoundingBox.height);
-                float Dleft = abs(ballBoundingBox.left - brickBoundingBox.left - brickBoundingBox.width);
-                float Dbottom = abs(ballBoundingBox.top - brickBoundingBox.top + ballBoundingBox.height);
-                float Dright = abs(ballBoundingBox.left - brickBoundingBox.left + ballBoundingBox.width);
 
-                if (Dtop <= Dleft && Dtop <= Dright && Dtop <= Dbottom)
-                {
-                    direction.y = -direction.y;
-                    std::cout << "bas" << std::endl;
-                }
-                else if (Dleft <= Dright && Dleft <= Dbottom && Dleft <= Dtop)
-                {
-                    direction.x = -direction.x;
-                    std::cout << "droite" << std::endl;
-                }
-                else if (Dright <= Dbottom && Dright <= Dleft && Dright <= Dtop)
-                {
-                    direction.x = -direction.x;
-                    //std::cout << "gauche" << std::endl;
-                }
-                else if (Dbottom <= Dleft && Dbottom <= Dtop && Dbottom <= Dright)
 
-                {
-                    direction.y = -direction.y;
-                    std::cout << "haut" << std::endl;
-                }
 
-                //Destroy the brick object
-                if (brick->GetBrickLife() <= 0)
+                if (ballBoundingBox.intersects(brickBoundingBox))
                 {
-                    brick->~Brick();
-                }
 
+                    brick->RemoveLife(1);
+                    float Dtop = abs(ballBoundingBox.top - brickBoundingBox.top - brickBoundingBox.height);
+                    float Dleft = abs(ballBoundingBox.left - brickBoundingBox.left - brickBoundingBox.width);
+                    float Dbottom = abs(ballBoundingBox.top - brickBoundingBox.top + ballBoundingBox.height);
+                    float Dright = abs(ballBoundingBox.left - brickBoundingBox.left + ballBoundingBox.width);
+
+                    if (Dtop <= Dleft && Dtop <= Dright && Dtop <= Dbottom)
+                    {
+                        direction.y = -direction.y;
+                        std::cout << "bas" << std::endl;
+                    }
+                    else if (Dleft <= Dright && Dleft <= Dbottom && Dleft <= Dtop)
+                    {
+                        direction.x = -direction.x;
+                        std::cout << "droite" << std::endl;
+                    }
+                    else if (Dright <= Dbottom && Dright <= Dleft && Dright <= Dtop)
+                    {
+                        direction.x = -direction.x;
+                        //std::cout << "gauche" << std::endl;
+                    }
+                    else if (Dbottom <= Dleft && Dbottom <= Dtop && Dbottom <= Dright)
+
+                    {
+                        direction.y = -direction.y;
+                        std::cout << "haut" << std::endl;
+                    }
+
+                    //Destroy the brick object
+                    if (brick->GetBrickLife() <= 0)
+                    {
+                        brick->~Brick();
+                    }
+
+                }
             }
         }
 
         //Ball movement
         if (move) {
-            x += 0.1f * direction.x;
-            y += 0.1f * direction.y;
+            x += 0.2f * direction.x;
+            y += 0.2f * direction.y;
 
             if (ballBoundingBox.top <= 0 || ballBoundingBox.left <= 0 || ballBoundingBox.left + ballBoundingBox.width >= Constants::screenWidth || ballBoundingBox.top >= Constants::screenHeight + ballBoundingBox.height) //If the ball out of the screen
             {
@@ -168,7 +184,10 @@ int main()
         
         window.clear();
         window.draw(ball->GetShape());
-        window.draw(brick->GetBrickShape());
+        for (Brick* brick : levelBricks)
+        {
+            window.draw(brick->GetBrickShape());
+        }
         window.display();
     }
 
