@@ -1,4 +1,5 @@
 #include "Brick.h"
+#include "Level.h"
 
 /// <summary>
 /// Constructor of the Brick object class
@@ -8,12 +9,12 @@
 /// <param name="sizeX"> Y axis size </param>
 /// <param name="sizeY"> Y axis size </param>
 /// <param name="lifePoints"> Brick life points </param>
-Brick::Brick(float sizeX, float sizeY, int lifePoints)
+Brick::Brick(float sizeX, float sizeY)
 {
 	brickSizeX = sizeX;
 	brickSizeY = sizeY;
-	brickLife = lifePoints;
 
+	SetRandomBrickLife();
 	SetBrickColor();
 
 	brickShape = sf::RectangleShape(sf::Vector2f(brickSizeX, brickSizeY));
@@ -55,6 +56,15 @@ sf::FloatRect Brick::GetBrickBoundingBox()
 	return brickShape.getGlobalBounds();
 }
 
+/// <summary>
+/// Get the bounding box (collision box) of the brick shape
+/// </summary>
+/// <returns> Brick bounding box </returns>
+int Brick::GetBrickLife()
+{
+	return 	brickLife;
+}
+
 void Brick::SetBrickColor()
 {
 	switch (brickLife)
@@ -90,4 +100,18 @@ void Brick::RemoveLife(int points)
 {
 	brickLife -= points;
 	SetBrickColor();
+}
+
+/// <summary>
+/// Brick object destructor
+/// </summary>
+Brick::~Brick()
+{
+	std::cout << "Brick destroyed.";
+}
+
+void Brick::SetRandomBrickLife()
+{
+	brickLife = 3;
+	//brickLife = rand() % 3 + 1;
 }

@@ -23,7 +23,7 @@ std::list<Brick*> Level::GenerateLevel()
 	{ 
 		for (size_t j = 0; j < levelBrickInLines; j++)
 		{
-			Brick* tempBrick = new Brick(10, 10, 1);
+			Brick* tempBrick = new Brick(10, 10);
 			levelBrickList.push_back(tempBrick);
 		}
 	}
