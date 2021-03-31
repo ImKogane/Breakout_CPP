@@ -13,8 +13,8 @@ std::list<Brick*> levelBricks;
 
 int main()
 {
-
-
+    sf::Clock clock;
+    srand(time(NULL));
     bool move = false;
     bool canshoot = true;
 
@@ -41,12 +41,14 @@ int main()
     float y = ball->GetShape().getPosition().y;
     Constants::BallOriginByRatio(ball, 0.5, 1);
     ballBoundingBox = ball->GetBallBoundingBox();
-    
+    levelBricks = level->GetBrickList();
 
     while (window.isOpen())
     {
+        float DeltaTime = clock.getElapsedTime().asSeconds();
+        clock.restart();
         sf::Event event;
-        levelBricks = level->GetBrickList();
+        
 
         ballBoundingBox = ball->GetBallBoundingBox();
 
@@ -59,53 +61,65 @@ int main()
             if (brick->GetBrickLife() > 0)
             {
                 //When the ball collide with a brick
-                if (ballBoundingBox.intersects(brickBoundingBox))
+                if (ballBoundingBox.intersects(brickBoundingBox) )
                 {
-
-                    brick->RemoveLife(1);
-                    float Dtop = abs(ballBoundingBox.top - brickBoundingBox.top - brickBoundingBox.height);
-                    float Dleft = abs(ballBoundingBox.left - brickBoundingBox.left - brickBoundingBox.width);
-                    float Dbottom = abs(ballBoundingBox.top - brickBoundingBox.top + ballBoundingBox.height);
-                    float Dright = abs(ballBoundingBox.left - brickBoundingBox.left + ballBoundingBox.width);
-
-                    if (Dtop <= Dleft && Dtop <= Dright && Dtop <= Dbottom)
+                    if (!Math::ContainsBrick(ball->GetCollisionBrickList(), brick))
                     {
-                        direction.y = -direction.y;
-                        std::cout << "Bottom collision." << std::endl;
+                        ball->AddBrick(brick);
+                        brick->RemoveLife(1);
+                        float Dtop = abs(ballBoundingBox.top - brickBoundingBox.top - brickBoundingBox.height);
+                        float Dleft = abs(ballBoundingBox.left - brickBoundingBox.left - brickBoundingBox.width);
+                        float Dbottom = abs(ballBoundingBox.top - brickBoundingBox.top + ballBoundingBox.height);
+                        float Dright = abs(ballBoundingBox.left - brickBoundingBox.left + ballBoundingBox.width);
+                        
+                        if (ball->GetChangeDirection())
+                        {
+                            if (Dtop <= Dleft && Dtop <= Dright && Dtop <= Dbottom)
+                            {
+                                direction.y = -direction.y;
+                                std::cout << "Bottom collision." << std::endl;
+                            }
+                            else if (Dleft <= Dright && Dleft <= Dbottom && Dleft <= Dtop)
+                            {
+                                direction.x = -direction.x;
+                                std::cout << "Right collision." << std::endl;
+                            }
+                            else if (Dright <= Dbottom && Dright <= Dleft && Dright <= Dtop)
+                            {
+                                direction.x = -direction.x;
+                                std::cout << "Left collision." << std::endl;
+                            }
+                            else if (Dbottom <= Dleft && Dbottom <= Dtop && Dbottom <= Dright)
+                            {
+                                direction.y = -direction.y;
+                                std::cout << "Top collision." << std::endl;
+                            }
+                        }
+                       
+                        ball->SetChangeDirection(false);
+                        //Destroy the brick object
+                        if (brick->GetBrickLife() <= 0)
+                        {
+                            brick->~Brick();
+                        }
                     }
-                    else if (Dleft <= Dright && Dleft <= Dbottom && Dleft <= Dtop)
-                    {
-                        direction.x = -direction.x;
-                        std::cout << "Right collision." << std::endl;
-                    }
-                    else if (Dright <= Dbottom && Dright <= Dleft && Dright <= Dtop)
-                    {
-                        direction.x = -direction.x;
-                        std::cout << "Left collision." << std::endl;
-                    }
-                    else if (Dbottom <= Dleft && Dbottom <= Dtop && Dbottom <= Dright)
-                    {
-                        direction.y = -direction.y;
-                        std::cout << "Top collision." << std::endl;
-                    }
-
-                    //Destroy the brick object
-                    if (brick->GetBrickLife() <= 0)
-                    {
-                        brick->~Brick();
-                    }
+                    
 
                 }
+          
             }
+            
         }
+        ball->SetChangeDirection(true);
 
         //Ball movement
         if (move) {
-            x += 0.2f * direction.x;
-            y += 0.2f * direction.y;
+            x += 1000*DeltaTime * direction.x;
+            y += 1000*DeltaTime * direction.y;
 
             if (ballBoundingBox.top <= 0 || ballBoundingBox.left <= 0 || ballBoundingBox.left + ballBoundingBox.width >= Constants::screenWidth || ballBoundingBox.top >= Constants::screenHeight + ballBoundingBox.height) //If the ball out of the screen
             {
+                ball->ResetCollisionBrickList();
                 if (ballBoundingBox.top <= 0 && direction.y < 0)
                 {
                     direction.y = -direction.y;
@@ -145,7 +159,7 @@ int main()
                          localPosition = sf::Mouse::getPosition(window);
                          direction.x = (float)localPosition.x-ball->GetBallXPosition();
                          direction.y = (float)localPosition.y-ball->GetBallYPosition();
-                         Math::normalize(direction);
+                         Math::Normalize(direction);
                          move = true;
                          canshoot = false;
                         }

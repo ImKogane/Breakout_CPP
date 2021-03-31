@@ -1,5 +1,8 @@
+#include <list>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "Brick.h"
+
 
 #pragma once
 class Ball
@@ -11,6 +14,8 @@ private:
 	sf::FloatRect ballBoundingBox;
 	float ballPosX;
 	float ballPosY;
+	bool ChangeDirection;
+	std::list<Brick*> CollisionBrickList;
 
 public :
 	Ball(float size);
@@ -21,6 +26,12 @@ public :
 	float GetBallXPosition();
 	float GetBallYPosition();
 	float GetBallSize();
+	bool GetChangeDirection();
+	std::list<Brick*> GetCollisionBrickList();
+
+	void AddBrick(Brick* brick);
+	void ResetCollisionBrickList();
+
 
 	void InitializeBall();
 
@@ -28,5 +39,7 @@ public :
 	void SetBallPosition(float x, float y);
 	void SetBallOrigin(float x, float y);
 	void SetBallColor(sf::Color color);
+	void SetChangeDirection(bool boool);
+
 };
 

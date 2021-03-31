@@ -50,6 +50,26 @@ float Ball::GetBallSize()
 	return ballSize;
 }
 
+bool Ball::GetChangeDirection()
+{
+	return ChangeDirection;
+}
+
+std::list<Brick*> Ball::GetCollisionBrickList()
+{
+	return CollisionBrickList;
+}
+
+void Ball::AddBrick(Brick* brick)
+{
+	CollisionBrickList.push_back(brick);
+}
+
+void Ball::ResetCollisionBrickList()
+{
+	CollisionBrickList.clear();
+}
+
 /// <summary>
 /// Set ball color
 /// </summary>
@@ -57,6 +77,12 @@ float Ball::GetBallSize()
 void Ball::SetBallColor(sf::Color color)
 {
 	ballShape.setFillColor(color);
+}
+
+void Ball::SetChangeDirection(bool boool)
+{
+	ChangeDirection = boool;
+	
 }
 
 /// <summary>

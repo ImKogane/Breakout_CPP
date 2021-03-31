@@ -118,5 +118,6 @@ Brick::~Brick()
 
 void Brick::SetRandomBrickLife()
 {
+	
 	brickLife = (rand() % 5) + 1;
 }
