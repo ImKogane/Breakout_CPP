@@ -6,6 +6,11 @@ Ball::Ball(float size)
 	ballSize = size;
 
 	InitializeBall();
+	
+}
+
+Ball::~Ball()
+{
 }
 
 /// <summary>
@@ -14,8 +19,14 @@ Ball::Ball(float size)
 void Ball::InitializeBall()
 {
 	ballShape.setRadius(ballSize);
-	ballShape.setPosition(ballPosX, ballPosY);
+	Constants::BallPositionRatio(this, 0.5, 1);
+	Constants::BallOriginByRatio(this, 0.5, 1);
 	SetBallColor(sf::Color::White);
+}
+
+sf::Vector2f Ball::GetDirection()
+{
+	return direction;
 }
 
 /// <summary>
@@ -83,6 +94,23 @@ void Ball::SetChangeDirection(bool boool)
 {
 	ChangeDirection = boool;
 	
+}
+
+void Ball::SetDirection(float x, float y)
+{
+	direction.x = x;
+	direction.y = y;
+	Math::Normalize(direction);
+}
+
+void Ball::XOppositeDirection()
+{
+	direction.x = -direction.x;
+}
+
+void Ball::YOppositeDirection()
+{
+	direction.y = -direction.y;	
 }
 
 /// <summary>

@@ -1,7 +1,8 @@
 #include "Constants.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
-
+#include "Ball.h"
+#include "Brick.h"
 
 void Constants::BallOriginByRatio(Ball* ball, float ratioX, float ratioY)
 {

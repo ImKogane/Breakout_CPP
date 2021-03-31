@@ -1,10 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Ball.h"
-#include "Brick.h"
 
+class Ball;
+class Brick;
 static class Constants
 {
+
 public:
 	 static const int screenWidth = 720	;
 	 static const int screenHeight = 900 ;
