@@ -6,7 +6,7 @@
 static class Constants
 {
 public:
-	 static const int screenWidth = 600	;
+	 static const int screenWidth = 720	;
 	 static const int screenHeight = 900 ;
 public:
 	static void BallOriginByRatio(Ball* ball, float ratioX, float ratioY);

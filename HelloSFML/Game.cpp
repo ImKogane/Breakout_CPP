@@ -3,6 +3,7 @@
 #include <list>
 #include <vector>
 #include "Ball.h"
+#include "Canon.h"
 #include "Math.h"
 #include "Level.h"
 #include "Constants.h"
@@ -25,17 +26,19 @@ int main()
     
     sf::Vector2f direction;
 
-    Level* level = new Level(5, 7);
+    Level* level = new Level(6, 8);
     levelBricks = level->GenerateLevel();
 
     sf::RenderWindow window(sf::VideoMode(Constants::screenWidth, Constants::screenHeight), "Ultimate Breakout");
 
     level->GenerateLevel();
 
+    //Canon generation
+    Canon* canon = new Canon(0.5f, 1, 50, 100);
+
     //Ball generation
     Ball* ball = new Ball(10);
     Constants::BallPositionRatio(ball, 0.5, 1);
-    level->GenerateLevel();
     //Get the ball position
     float x = ball->GetShape().getPosition().x; 
     float y = ball->GetShape().getPosition().y;
@@ -52,7 +55,8 @@ int main()
 
         ballBoundingBox = ball->GetBallBoundingBox();
 
-        
+
+
         //For each brick in level
         for (Brick* brick : levelBricks)
 
@@ -173,6 +177,7 @@ int main()
         
         window.clear();
         window.draw(ball->GetShape());
+        window.draw(canon->GetCanonShape());
         for (Brick* brick : levelBricks)
         {
             window.draw(brick->GetBrickShape());
