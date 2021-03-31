@@ -20,9 +20,10 @@ private:
 	bool ChangeDirection;
 	std::list<Brick*> CollisionBrickList;
 	sf::Vector2f direction;
+	int NumberBall;
 
 public:
-	Ball(float size);
+	Ball(float size, int nbBall);
 	~Ball();
 
 	//Geters
@@ -34,6 +35,7 @@ public:
 	float GetBallSize();
 	bool GetChangeDirection();
 	std::list<Brick*> GetCollisionBrickList();
+	int GetNumberBall();
 
 	void AddBrick(Brick* brick);
 	void ResetCollisionBrickList();

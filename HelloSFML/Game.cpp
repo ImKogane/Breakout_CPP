@@ -71,7 +71,7 @@ int main()
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
                     
-                    if (balls->GetCurrentBallCount()<balls->GetBallsSize())
+                    if (balls->GetCurrentBallCount()< balls->GetBallsSize())
                     {   
                             Ball* ball = balls->AddBall();
                             localPosition = sf::Mouse::getPosition(window);
@@ -181,24 +181,17 @@ int main()
                     }
                     if (ballBoundingBox.top >= Constants::screenHeight + ballBoundingBox.height) {
                         canshoot = true;
-                        move = false;
-                        ball->~Ball();
-                        std::cout << "Ball Destroyed/n";
+                        
+                        balls->RemoveBall(ball);
+                        
                     }
                 }
 
             }
             ball->SetBallPosition(NextXPos, NextYPos);
         }
-
-        
-
-        
-        
-        
-
-
-        
+     
+    
         window.clear();
         for (Ball* ball : balls->GetBallList())
         {

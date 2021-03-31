@@ -3,6 +3,7 @@
 Balls::Balls(int size)
 {
 	BallsSize = size;
+	
 }
 
 int Balls::GetBallsSize()
@@ -17,17 +18,18 @@ std::list<Ball*> Balls::GetBallList()
 
 int Balls::GetCurrentBallCount()
 {
-	return BallList.size();
+	return countBall;
 }
 
 Ball* Balls::AddBall()
 {
-	Ball* ball = new Ball(10);
-	BallList.push_back(ball);
+	Ball* ball = new Ball(10, countBall);
+	BallList.push_back( ball);
+	countBall++;
 	return ball;
 }
 
 void Balls::RemoveBall(Ball* ball)
 {
-	ball->~Ball();
+	countBall--;
 }

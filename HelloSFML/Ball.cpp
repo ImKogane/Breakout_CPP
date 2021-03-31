@@ -1,9 +1,10 @@
 #include "Ball.h"
 
 
-Ball::Ball(float size)
+Ball::Ball(float size, int nbBall)
 {
 	ballSize = size;
+	NumberBall = nbBall;
 
 	InitializeBall();
 	
@@ -69,6 +70,11 @@ bool Ball::GetChangeDirection()
 std::list<Brick*> Ball::GetCollisionBrickList()
 {
 	return CollisionBrickList;
+}
+
+int Ball::GetNumberBall()
+{
+	return NumberBall;
 }
 
 void Ball::AddBrick(Brick* brick)

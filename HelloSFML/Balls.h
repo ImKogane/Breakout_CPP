@@ -9,6 +9,7 @@ class Balls
 private:
 	int BallsSize;
 	std::list<Ball*> BallList;
+	int countBall;
 
 public: 
 	
