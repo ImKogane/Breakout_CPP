@@ -3,7 +3,7 @@
 
 Ball::Ball(float size, int nbBall)
 {
-	ballSize = size;
+	ball_size = size;
 	NumberBall = nbBall;
 
 	InitializeBall();
@@ -19,7 +19,7 @@ Ball::~Ball()
 /// </summary>
 void Ball::InitializeBall()
 {
-	ball_shape.setRadius(ballSize);
+	ball_shape.setRadius(ball_size);
 	Constants::BallPositionRatio(this, 0.5, 1);
 	Constants::BallOriginByRatio(this, 0.5, 1);
 	SetBallColor(sf::Color::White);
@@ -59,7 +59,7 @@ float Ball::GetBallYPosition()
 }
 float Ball::GetBallSize()
 {
-	return ballSize;
+	return ball_size;
 }
 
 bool Ball::GetChangeDirection()
