@@ -2,16 +2,18 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 #include "Balls.h"
 #include "Canon.h"
 #include "Math.h"
 #include "Level.h"
 #include "Constants.h"
-#include "GameManager.h"
+#include "ScoreManager.h"
 
 
 std::list<Brick*> levelBricks;
-GameManager* GManager = new GameManager();
+ScoreManager* SManager = new ScoreManager();
 
 int main()
 {
@@ -22,51 +24,38 @@ int main()
     bool HasCollision = true;
     float NextXPos;
     float NextYPos;
+
+    int ballDamage = 1;
+    int index;
  
     sf::FloatRect ballBoundingBox;
     sf::FloatRect brickBoundingBox;
     sf::Vector2i localPosition;
     
-    //sf::Vector2f direction;
 
-    Level* level = new Level(6, 8);
-    levelBricks = level->GenerateLevel();
 
     sf::RenderWindow window(sf::VideoMode(Constants::screenWidth, Constants::screenHeight), "Ultimate Breakout");
 
+    //Level generation
+    Level* level = new Level(6, 8);
+    levelBricks = level->GenerateLevel();
     level->GenerateLevel();
 
     //Canon generation
     Canon* canon = new Canon(0.5f, 1, 50, 100);
 
     //Ball generation
-    //Ball* ball = new Ball(10);
-    Balls* balls = new Balls(3);
-    //BallList = balls->GetBallList();
-    /*Constants::BallPositionRatio(ball, 0.5, 1);
-    //Get the ball position
-    float x = ball->GetShape().getPosition().x; 
-    float y = ball->GetShape().getPosition().y;
-    Constants::BallOriginByRatio(ball, 0.5, 1);
-    ballBoundingBox = ball->GetBallBoundingBox();*/
+    Balls* balls = new Balls(3, ballDamage);
     levelBricks = level->GetBrickList();
 
-
+    //Score text
     sf::Font font;
     sf::Text text;
     font.loadFromFile("Facon.ttf");
-    // choix de la police à utiliser
-    text.setFont(font); // font est un sf::Font
-
-    // choix de la chaîne de caractères à afficher
-    // choix de la taille des caractères
-    text.setCharacterSize(30); // exprimée en pixels, pas en points !
+    text.setFont(font); 
+    text.setCharacterSize(30);
     text.setPosition(10, Constants::screenHeight-40);
-
-    // choix de la couleur du texte
     text.setFillColor(sf::Color::White);
-
-    // choix du style du texte
     text.setStyle(sf::Text::Bold);
 
 
@@ -81,7 +70,7 @@ int main()
         sf::Event event;
         
 
-        text.setString(std::to_string(GManager->GetScore()));
+        text.setString(std::to_string(SManager->GetScore()));
 
         //For each brick in level
         while (window.pollEvent(event))
@@ -146,7 +135,7 @@ int main()
                 }
 
                 ball->AddBrick(brick);
-                brick->RemoveLife(1);
+                brick->RemoveLife(ballDamage);
                 float Dtop = abs(ballBoundingBox.top - brickBoundingBox.top - brickBoundingBox.height);
                 float Dleft = abs(ballBoundingBox.left - brickBoundingBox.left - brickBoundingBox.width);
                 float Dbottom = abs(ballBoundingBox.top - brickBoundingBox.top + ballBoundingBox.height);
@@ -185,7 +174,30 @@ int main()
                 }
 
                 //Destroy the brick object
-                GManager->AddScore(brick->GetBrickScore());
+
+                /*Simple power-up system
+                index = (rand() % 3) + 1;
+
+                switch (index)
+                {
+                case 1:
+                    std::cout << "Boost" << std::endl;
+                    ballCount++
+                    break;
+
+                case 2:
+                    std::cout << "De-Boost" << std::endl;
+                    ballDamage = 1;
+                    break;
+
+                default:
+                    break;
+                }
+                //END of powerup
+                */
+
+                //Destroy the brick object
+                SManager->AddScore(brick->GetBrickScore());
                 it = levelBricks.erase(it);
                 delete brick;
             }
@@ -220,6 +232,8 @@ int main()
             
             if (ballBoundingBox.top >= Constants::screenHeight + ballBoundingBox.height) {
                 canshoot = true;
+                
+
                 
                 itBall = BallList.erase(itBall);
                 delete ball;

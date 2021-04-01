@@ -1,12 +1,12 @@
 #pragma once
-class GameManager
+class ScoreManager
 {
 private:
 	//Score system
-	int gm_score;
+	int sm_score;
 
 public :
-	GameManager();
+	ScoreManager();
 
 	//Score system
 	void AddScore(int newScore);

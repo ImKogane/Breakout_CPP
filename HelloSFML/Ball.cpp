@@ -1,9 +1,10 @@
 #include "Ball.h"
 
 
-Ball::Ball(float size, int nbBall)
+Ball::Ball(float size, int nbBall, int damage)
 {
 	ball_size = size;
+	ball_damage = damage;
 	NumberBall = nbBall;
 
 	InitializeBall();
@@ -27,7 +28,7 @@ void Ball::InitializeBall()
 
 sf::Vector2f Ball::GetDirection()
 {
-	return direction;
+	return ball_direction;
 }
 
 /// <summary>
@@ -37,6 +38,15 @@ sf::Vector2f Ball::GetDirection()
 sf::CircleShape Ball::GetShape()
 {
 	return ball_shape;
+}
+
+/// <summary>
+/// Get the ball damage
+/// </summary>
+/// <returns></returns>
+int Ball::GetBallDamage()
+{
+	return ball_damage;
 }
 
 /// <summary>
@@ -104,19 +114,19 @@ void Ball::SetChangeDirection(bool boool)
 
 void Ball::SetDirection(float x, float y)
 {
-	direction.x = x;
-	direction.y = y;
-	Math::Normalize(direction);
+	ball_direction.x = x;
+	ball_direction.y = y;
+	Math::Normalize(ball_direction);
 }
 
 void Ball::XOppositeDirection()
 {
-	direction.x = -direction.x;
+	ball_direction.x = -ball_direction.x;
 }
 
 void Ball::YOppositeDirection()
 {
-	direction.y = -direction.y;	
+	ball_direction.y = -ball_direction.y;	
 }
 
 /// <summary>
@@ -139,4 +149,9 @@ void Ball::SetBallPosition(float x, float y)
 	ball_posX = x;
 	ball_posY = y;
 	ball_shape.setPosition(ball_posX, ball_posY);
+}
+
+void Ball::InscreaseBallDamage(int newDamage)
+{
+	ball_damage += newDamage;
 }

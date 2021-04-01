@@ -1,14 +1,20 @@
 #include "Balls.h"
 
-Balls::Balls(int size)
+Balls::Balls(int size, int damage)
 {
 	BallsSize = size;
+	BallsDamage = damage;
 	
 }
 
 int Balls::GetBallsSize()
 {
 	return BallsSize;
+}
+
+int Balls::GetBallsDamage()
+{
+	return BallsDamage;
 }
 
 std::list<Ball*>&  Balls::GetBallList()
@@ -23,7 +29,7 @@ int Balls::GetCurrentBallCount()
 
 Ball* Balls::AddBall()
 {
-	Ball* ball = new Ball(10, countBall);
+	Ball* ball = new Ball(10, countBall, BallsDamage);
 	BallList.push_back( ball);
 	countBall++;
 	return ball;

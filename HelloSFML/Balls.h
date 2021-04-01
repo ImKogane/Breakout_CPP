@@ -8,15 +8,17 @@ class Balls
 {
 private:
 	int BallsSize;
+	int BallsDamage;
 	std::list<Ball*> BallList;
 	int countBall;
 
 public: 
 	
-	Balls(int size);
+	Balls(int size, int damage);
 
 	//getter
 	int GetBallsSize();
+	int GetBallsDamage();
 	std::list<Ball*>& GetBallList();
 	int GetCurrentBallCount();
 
