@@ -44,7 +44,7 @@ float Brick::GetSizeY()
 /// <summary>shapesize in Y axis
 /// </summary>
 /// <returns>Brick shape </returns>
-sf::RectangleShape Brick::GetBrickShape()
+sf::RectangleShape& Brick::GetBrickShape()
 {
 	return brickShape;
 }
@@ -115,16 +115,8 @@ void Brick::RemoveLife(int points)
 	SetBrickColor();
 }
 
-/// <summary>
-/// Brick object destructor
-/// </summary>
-Brick::~Brick()
-{
-	//std::cout << "Brick destroyed." << std::endl;
-}
 
 void Brick::SetRandomBrickLife()
 {
-	
 	brickLife = (rand() % 5) + 1;
 }

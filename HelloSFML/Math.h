@@ -7,6 +7,6 @@ class Math
 {
 public:
 	static void Normalize(sf::Vector2f &V);
-	static bool ContainsBrick(std::list<Brick*> list, Brick* x);
+	static bool ContainsBrick(const std::list<Brick*>& list, Brick* x);
 };
 

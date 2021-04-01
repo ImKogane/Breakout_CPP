@@ -10,7 +10,7 @@ void Math::Normalize(sf::Vector2f &V)
 	V.y = V.y / length;
 }
 
-bool Math::ContainsBrick(std::list<Brick*> list, Brick* x)
+bool Math::ContainsBrick(const std::list<Brick*>& list, Brick* x)
 {
 	return std::find(list.begin(), list.end(), x) != list.end();
 }

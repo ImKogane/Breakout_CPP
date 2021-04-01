@@ -19,7 +19,7 @@ int main()
     srand(time(NULL));
     bool move = false;
     bool canshoot = true;
-    bool CanReset = true;
+    bool HasCollision = true;
     float NextXPos;
     float NextYPos;
  
@@ -82,8 +82,6 @@ int main()
 
         text.setString(std::to_string(GManager->GetScore()));
 
-
-        CanReset = true;
         //For each brick in level
         while (window.pollEvent(event))
         {
@@ -111,76 +109,81 @@ int main()
                 }
             }
         }
+
+        HasCollision = false;
         for (Ball* ball : balls->GetBallList())
         {
             ballBoundingBox = ball->GetBallBoundingBox();
+            std::list<Brick*>::iterator it = levelBricks.begin();
 
-            for (Brick* brick : levelBricks)
-
+            while (it != levelBricks.end())
+            //for (Brick* brick : levelBricks)
             {
+                Brick* brick = *it;
                 brickBoundingBox = brick->GetBrickBoundingBox();
-                if (brick->GetBrickLife() > 0)
+                if (Math::ContainsBrick(ball->GetCollisionBrickList(), brick) )
                 {
-                    //When the ball collide with a brick
-                    if (ballBoundingBox.intersects(brickBoundingBox))
-                    {
-                        if (!Math::ContainsBrick(ball->GetCollisionBrickList(), brick))
-                        {
-
-                            if (CanReset)
-                            {
-                                ball->ResetCollisionBrickList();
-                            }
-                            CanReset = false;
-                            ball->AddBrick(brick);
-                            brick->RemoveLife(1);
-                            float Dtop = abs(ballBoundingBox.top - brickBoundingBox.top - brickBoundingBox.height);
-                            float Dleft = abs(ballBoundingBox.left - brickBoundingBox.left - brickBoundingBox.width);
-                            float Dbottom = abs(ballBoundingBox.top - brickBoundingBox.top + ballBoundingBox.height);
-                            float Dright = abs(ballBoundingBox.left - brickBoundingBox.left + ballBoundingBox.width);
-
-                            if (ball->GetChangeDirection())
-                            {
-                                if (Dtop <= Dleft && Dtop <= Dright && Dtop <= Dbottom)
-                                {
-                                    ball->YOppositeDirection();
-                                    //std::cout << "Bottom collision." << std::endl;
-                                }
-                                else if (Dleft <= Dright && Dleft <= Dbottom && Dleft <= Dtop)
-                                {
-                                    ball->XOppositeDirection();
-                                    std::cout << "Right collision." << std::endl;
-                                }
-                                else if (Dright <= Dbottom && Dright <= Dleft && Dright <= Dtop)
-                                {
-                                    ball->XOppositeDirection();
-                                    std::cout << "Left collision." << std::endl;
-                                }
-                                else if (Dbottom <= Dleft && Dbottom <= Dtop && Dbottom <= Dright)
-                                {
-                                    ball->YOppositeDirection();
-                                    std::cout << "Top collision." << std::endl;
-                                }
-                            }
-
-                            ball->SetChangeDirection(false);
-                            //Destroy the brick object
-                            if (brick->GetBrickLife() <= 0)
-                            {
-                                GManager->AddScore(brick->GetBrickScore());
-                                delete brick;
-
-                            }
-                        }
-
-
-                    }
-
+                    ++it;
+                    continue;
                 }
 
-            }
+                if (ballBoundingBox.intersects(brickBoundingBox) == false ) 
+                {
+                    ++it;
+                    continue;
+                }
+                
 
-            ball->SetChangeDirection(true);
+                //When the ball collide with a brick
+                if(HasCollision == false )
+                {
+                    ball->ResetCollisionBrickList();
+                }
+
+                ball->AddBrick(brick);
+                brick->RemoveLife(1);
+                float Dtop = abs(ballBoundingBox.top - brickBoundingBox.top - brickBoundingBox.height);
+                float Dleft = abs(ballBoundingBox.left - brickBoundingBox.left - brickBoundingBox.width);
+                float Dbottom = abs(ballBoundingBox.top - brickBoundingBox.top + ballBoundingBox.height);
+                float Dright = abs(ballBoundingBox.left - brickBoundingBox.left + ballBoundingBox.width);
+
+                if (HasCollision == false )
+                {
+                    if (Dtop <= Dleft && Dtop <= Dright && Dtop <= Dbottom)
+                    {
+                        ball->YOppositeDirection();
+                        //std::cout << "Bottom collision." << std::endl;
+                    }
+                    else if (Dleft <= Dright && Dleft <= Dbottom && Dleft <= Dtop)
+                    {
+                        ball->XOppositeDirection();
+                        std::cout << "Right collision." << std::endl;
+                    }
+                    else if (Dright <= Dbottom && Dright <= Dleft && Dright <= Dtop)
+                    {
+                        ball->XOppositeDirection();
+                        std::cout << "Left collision." << std::endl;
+                    }
+                    else if (Dbottom <= Dleft && Dbottom <= Dtop && Dbottom <= Dright)
+                    {
+                        ball->YOppositeDirection();
+                        std::cout << "Top collision." << std::endl;
+                    }
+                }
+
+                HasCollision = true;
+
+                if (brick->GetBrickLife() >  0) 
+                {
+                    ++it;
+                    continue;
+                }
+
+                //Destroy the brick object
+                GManager->AddScore(brick->GetBrickScore());
+                it = levelBricks.erase(it);
+                delete brick;
+            }
 
             //Ball movement
             if (move) {

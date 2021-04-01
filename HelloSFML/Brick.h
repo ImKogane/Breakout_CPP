@@ -18,10 +18,9 @@ private:
 
 public :
 	Brick(float sizeX, float sizeY);
-	~Brick();
 	float GetSizeX();
 	float GetSizeY();
-	sf::RectangleShape GetBrickShape();
+	sf::RectangleShape& GetBrickShape();
 	sf::FloatRect GetBrickBoundingBox();
 	int GetBrickLife();
 	int GetBrickScore();
