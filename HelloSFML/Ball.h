@@ -12,11 +12,12 @@ class Ball
 {
 
 private:
-	float ballSize;
-	sf::CircleShape ballShape;
+	float ball_size;
+	sf::CircleShape ball_shape;
 	sf::FloatRect ballBoundingBox;
-	float ballPosX;
-	float ballPosY;
+	float ball_posX;
+	float ball_posY;
+	int ball_damage;
 	bool ChangeDirection;
 	std::list<Brick*> CollisionBrickList;
 	sf::Vector2f direction;

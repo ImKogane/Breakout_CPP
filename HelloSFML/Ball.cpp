@@ -19,7 +19,7 @@ Ball::~Ball()
 /// </summary>
 void Ball::InitializeBall()
 {
-	ballShape.setRadius(ballSize);
+	ball_shape.setRadius(ballSize);
 	Constants::BallPositionRatio(this, 0.5, 1);
 	Constants::BallOriginByRatio(this, 0.5, 1);
 	SetBallColor(sf::Color::White);
@@ -36,7 +36,7 @@ sf::Vector2f Ball::GetDirection()
 /// <returns></returns>
 sf::CircleShape Ball::GetShape()
 {
-	return ballShape;
+	return ball_shape;
 }
 
 /// <summary>
@@ -45,17 +45,17 @@ sf::CircleShape Ball::GetShape()
 /// <returns> Ball bounding box </returns>
 sf::FloatRect Ball::GetBallBoundingBox()
 {
-	return ballShape.getGlobalBounds();
+	return ball_shape.getGlobalBounds();
 }
 
 
 float Ball::GetBallXPosition()
 {
-	return ballPosX;
+	return ball_posX;
 }
 float Ball::GetBallYPosition()
 {
-	return ballPosY;
+	return ball_posY;
 }
 float Ball::GetBallSize()
 {
@@ -93,7 +93,7 @@ void Ball::ResetCollisionBrickList()
 /// <param name="color"> Color to set the ball color </param>
 void Ball::SetBallColor(sf::Color color)
 {
-	ballShape.setFillColor(color);
+	ball_shape.setFillColor(color);
 }
 
 void Ball::SetChangeDirection(bool boool)
@@ -126,7 +126,7 @@ void Ball::YOppositeDirection()
 /// <param name="y"> Origin point on Y axis </param>
 void Ball::SetBallOrigin(float x, float y)
 {
-	ballShape.setOrigin(x, y);
+	ball_shape.setOrigin(x, y);
 }
 
 /// <summary>
@@ -136,7 +136,7 @@ void Ball::SetBallOrigin(float x, float y)
 /// <param name="y"> Ball position on Y axis </param>
 void Ball::SetBallPosition(float x, float y)
 {
-	ballPosX = x;
-	ballPosY = y;
-	ballShape.setPosition(ballPosX, ballPosY);
+	ball_posX = x;
+	ball_posY = y;
+	ball_shape.setPosition(ball_posX, ball_posY);
 }
