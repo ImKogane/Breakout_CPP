@@ -11,7 +11,7 @@ int Balls::GetBallsSize()
 	return BallsSize;
 }
 
-std::list<Ball*> Balls::GetBallList()
+std::list<Ball*>&  Balls::GetBallList()
 {
 	return BallList;
 }
@@ -29,7 +29,7 @@ Ball* Balls::AddBall()
 	return ball;
 }
 
-void Balls::RemoveBall(Ball* ball)
+void Balls::RemoveBall()
 {
 	countBall--;
 }

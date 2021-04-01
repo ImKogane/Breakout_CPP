@@ -17,10 +17,10 @@ public:
 
 	//getter
 	int GetBallsSize();
-	std::list<Ball*> GetBallList();
+	std::list<Ball*>& GetBallList();
 	int GetCurrentBallCount();
 
 	Ball* AddBall();
-	void RemoveBall(Ball* ball);
+	void RemoveBall();
 };
 

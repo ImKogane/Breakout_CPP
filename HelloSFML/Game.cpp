@@ -42,6 +42,7 @@ int main()
     //Ball generation
     //Ball* ball = new Ball(10);
     Balls* balls = new Balls(3);
+    //BallList = balls->GetBallList();
     /*Constants::BallPositionRatio(ball, 0.5, 1);
     //Get the ball position
     float x = ball->GetShape().getPosition().x; 
@@ -72,7 +73,7 @@ int main()
 
         
 
-
+    
     while (window.isOpen())
     {
         float DeltaTime = clock.getElapsedTime().asSeconds();
@@ -110,9 +111,13 @@ int main()
             }
         }
 
+        std::list<Ball*>& BallList = balls->GetBallList();
         HasCollision = false;
-        for (Ball* ball : balls->GetBallList())
-        {
+        std::list<Ball*>::iterator itBall = BallList.begin();
+        while (itBall != BallList.end())
+        //for (Ball* ball : balls->GetBallList())
+        {   
+            Ball* ball = *itBall;
             ballBoundingBox = ball->GetBallBoundingBox();
             std::list<Brick*>::iterator it = levelBricks.begin();
 
@@ -208,21 +213,31 @@ int main()
                         ball->XOppositeDirection();
 
                     }
-                    if (ballBoundingBox.top >= Constants::screenHeight + ballBoundingBox.height) {
-                        canshoot = true;
-                        
-                        balls->RemoveBall(ball);
-                        
-                    }
+
                 }
 
             }
-            ball->SetBallPosition(NextXPos, NextYPos);
+            
+            if (ballBoundingBox.top >= Constants::screenHeight + ballBoundingBox.height) {
+                canshoot = true;
+                
+                itBall = BallList.erase(itBall);
+                delete ball;
+                balls->RemoveBall();
+                
+
+            }
+            else
+            {
+                ball->SetBallPosition(NextXPos, NextYPos);
+                itBall++;
+                
+            }
         }
      
     
         window.clear();
-        for (Ball* ball : balls->GetBallList())
+        for (Ball* ball : BallList)
         {
             window.draw(ball->GetShape());
         }
