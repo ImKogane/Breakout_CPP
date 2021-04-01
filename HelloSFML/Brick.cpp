@@ -17,6 +17,8 @@ Brick::Brick(float sizeX, float sizeY)
 	SetRandomBrickLife();
 	SetBrickColor();
 
+	brickScore = brickLife;
+
 	brickShape = sf::RectangleShape(sf::Vector2f(brickSizeX, brickSizeY));
 	
 }
@@ -63,6 +65,11 @@ sf::FloatRect Brick::GetBrickBoundingBox()
 int Brick::GetBrickLife()
 {
 	return 	brickLife;
+}
+
+int Brick::GetBrickScore()
+{
+	return 	brickScore;
 }
 
 void Brick::SetBrickColor()
@@ -113,7 +120,7 @@ void Brick::RemoveLife(int points)
 /// </summary>
 Brick::~Brick()
 {
-	std::cout << "Brick destroyed.";
+	//std::cout << "Brick destroyed." << std::endl;
 }
 
 void Brick::SetRandomBrickLife()

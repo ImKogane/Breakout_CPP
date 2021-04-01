@@ -12,6 +12,7 @@ private:
 	float brickPosX;
 	float brickPosY;
 	int brickLife;
+	int brickScore;
 	sf::RectangleShape brickShape;
 	sf::FloatRect brickBoundingBox;
 
@@ -23,6 +24,7 @@ public :
 	sf::RectangleShape GetBrickShape();
 	sf::FloatRect GetBrickBoundingBox();
 	int GetBrickLife();
+	int GetBrickScore();
 
 	void SetBrickPosition(float x, float y);
 	void SetBrickColor();

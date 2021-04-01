@@ -7,10 +7,11 @@
 #include "Math.h"
 #include "Level.h"
 #include "Constants.h"
+#include "GameManager.h"
 
 
 std::list<Brick*> levelBricks;
-
+GameManager* GManager = new GameManager();
 
 int main()
 {
@@ -49,6 +50,29 @@ int main()
     ballBoundingBox = ball->GetBallBoundingBox();*/
     levelBricks = level->GetBrickList();
 
+
+    sf::Font font;
+    sf::Text text;
+    font.loadFromFile("Facon.ttf");
+    // choix de la police à utiliser
+    text.setFont(font); // font est un sf::Font
+
+    // choix de la chaîne de caractères à afficher
+    // choix de la taille des caractères
+    text.setCharacterSize(30); // exprimée en pixels, pas en points !
+    text.setPosition(10, Constants::screenHeight-40);
+
+    // choix de la couleur du texte
+    text.setFillColor(sf::Color::White);
+
+    // choix du style du texte
+    text.setStyle(sf::Text::Bold);
+
+
+
+        
+
+
     while (window.isOpen())
     {
         float DeltaTime = clock.getElapsedTime().asSeconds();
@@ -56,7 +80,7 @@ int main()
         sf::Event event;
         
 
-        
+        text.setString(std::to_string(GManager->GetScore()));
 
 
         CanReset = true;
@@ -120,7 +144,7 @@ int main()
                                 if (Dtop <= Dleft && Dtop <= Dright && Dtop <= Dbottom)
                                 {
                                     ball->YOppositeDirection();
-                                    std::cout << "Bottom collision." << std::endl;
+                                    //std::cout << "Bottom collision." << std::endl;
                                 }
                                 else if (Dleft <= Dright && Dleft <= Dbottom && Dleft <= Dtop)
                                 {
@@ -143,7 +167,9 @@ int main()
                             //Destroy the brick object
                             if (brick->GetBrickLife() <= 0)
                             {
-                                brick->~Brick();
+                                GManager->AddScore(brick->GetBrickScore());
+                                delete brick;
+
                             }
                         }
 
@@ -203,6 +229,9 @@ int main()
         {
             window.draw(brick->GetBrickShape());
         }
+
+        // puis, dans la boucle de dessin, entre window.clear() et window.display()
+        window.draw(text);
         window.display();
     }
 
