@@ -2,6 +2,7 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <math.h>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 #include "Balls.h"
@@ -11,6 +12,7 @@
 #include "Constants.h"
 #include "ScoreManager.h"
 
+#define PI 3.14159265
 
 std::list<Brick*> levelBricks;
 ScoreManager* SManager = new ScoreManager();
@@ -24,6 +26,9 @@ int main()
     bool HasCollision = true;
     float NextXPos;
     float NextYPos;
+    float Theta;
+    float angle;
+    sf::Vector2f PosCanon;
 
     int ballDamage = 1;
     int index;
@@ -72,6 +77,14 @@ int main()
 
         text.setString(std::to_string(SManager->GetScore()));
 
+        localPosition = sf::Mouse::getPosition(window);
+        //PosCanon = canon->GetCanonShape().getPosition();
+        
+        Theta =localPosition.x - PosCanon.x* 0 + localPosition.y-PosCanon.y * 1/((sqrt((localPosition.x-PosCanon.x)* (localPosition.x - PosCanon.x) + (localPosition.y - PosCanon.y) * (localPosition.y - PosCanon.y))));
+        angle = acos(Theta) * 180 / PI;
+        canon->GetCanonShape().setRotation(angle);
+            
+
         //For each brick in level
         while (window.pollEvent(event))
         {
@@ -87,10 +100,7 @@ int main()
                     {   
                             Ball* ball = balls->AddBall();
                             localPosition = sf::Mouse::getPosition(window);
-                            //direction.x = (float)localPosition.x - ball->GetBallXPosition();
-                            //direction.y = (float)localPosition.y - ball->GetBallYPosition();
                             ball->SetDirection((float)localPosition.x - ball->GetBallXPosition(), (float)localPosition.y - ball->GetBallYPosition());
-                            //Math::Normalize(direction);
                             move = true;
                             canshoot = false;
                     }
@@ -103,15 +113,14 @@ int main()
         std::list<Ball*>& BallList = balls->GetBallList();
         HasCollision = false;
         std::list<Ball*>::iterator itBall = BallList.begin();
-        while (itBall != BallList.end())
-        //for (Ball* ball : balls->GetBallList())
+        while (itBall != BallList.end())     
         {   
             Ball* ball = *itBall;
             ballBoundingBox = ball->GetBallBoundingBox();
             std::list<Brick*>::iterator it = levelBricks.begin();
 
             while (it != levelBricks.end())
-            //for (Brick* brick : levelBricks)
+
             {
                 Brick* brick = *it;
                 brickBoundingBox = brick->GetBrickBoundingBox();
@@ -146,7 +155,7 @@ int main()
                     if (Dtop <= Dleft && Dtop <= Dright && Dtop <= Dbottom)
                     {
                         ball->YOppositeDirection();
-                        //std::cout << "Bottom collision." << std::endl;
+                        std::cout << "Bottom collision." << std::endl;
                     }
                     else if (Dleft <= Dright && Dleft <= Dbottom && Dleft <= Dtop)
                     {
